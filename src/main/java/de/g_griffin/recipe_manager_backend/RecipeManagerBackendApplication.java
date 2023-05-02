@@ -6,8 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class RecipeManagerBackendApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(RecipeManagerBackendApplication.class, args);
-    }
-
+  public static void main(String[] args) {
+    SpringApplication.run(RecipeManagerBackendApplication.class, args);
+  }
 }
