@@ -24,8 +24,14 @@ public class RecipeIndex {
         this.recipeIndexText = recipeIndexText;
     }
 
+    @Deprecated  // Deprecated constructor for testing purposes
+    public RecipeIndex(Long id, String recipeIndexText) {
+        this.id = id;
+        this.recipeIndexText = recipeIndexText;
+    }
+
     @Override
     public String toString() {
-        return "RecipeIndex{" + "id=" + id + ", indexText='" + recipeIndexText + '\'' + '}';
+        return "RecipeIndex{" + "id=" + id + ", recipeIndexText='" + recipeIndexText + '\'' + '}';
     }
 }
