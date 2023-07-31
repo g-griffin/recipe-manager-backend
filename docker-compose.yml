@@ -1,11 +1,32 @@
 version: '3.8'
 
 services:
-  db:
+  postgres:
     image: postgres:13-alpine
-    container_name: db
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
+    networks:
+      - local-keycloak
+    healthcheck:
+      test: "exit 0"
     ports:
       - "5432:5432"
+    env_file:
+      - "./database.env"
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.1.1
+    command: start-dev
+    depends_on:
+      - "postgres"
+    container_name: local_keycloak
+    ports:
+      - "8180:8080"
+      - "8443:8443"
+    env_file:
+      - "./keycloak.env"
+    restart: unless-stopped
+    networks:
+      - local-keycloak
+
+networks:
+  local-keycloak:
+    driver: bridge
