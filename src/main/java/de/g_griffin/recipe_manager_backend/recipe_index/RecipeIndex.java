@@ -13,9 +13,14 @@ public class RecipeIndex {
     @GeneratedValue
     @Getter
     private Long id;
+
     @Getter
     @Setter
     private String recipeIndexText;
+
+    @Getter
+    @Setter
+    private String userId;
 
     public RecipeIndex() {
     }
@@ -32,6 +37,10 @@ public class RecipeIndex {
 
     @Override
     public String toString() {
-        return "RecipeIndex{" + "id=" + id + ", recipeIndexText='" + recipeIndexText + '\'' + '}';
+        return "RecipeIndex{"
+                + "id=" + id
+                + ", recipeIndexText='" + recipeIndexText + '\''
+                + ", userId=" + userId
+                + '}';
     }
 }
