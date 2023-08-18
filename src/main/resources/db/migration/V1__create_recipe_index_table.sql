@@ -1,5 +1,5 @@
 CREATE TABLE recipe_index
 (
-    id         SERIAL PRIMARY KEY,
+    id         BIGSERIAL PRIMARY KEY,
     recipe_index_text TEXT NOT NULL
 );
