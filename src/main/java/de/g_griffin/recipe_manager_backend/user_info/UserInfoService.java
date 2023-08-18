@@ -1,5 +1,7 @@
 package de.g_griffin.recipe_manager_backend.user_info;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import de.g_griffin.recipe_manager_backend.exceptions.ResourceNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -16,7 +18,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class UserInfoService {
 
-    public static final String USER_INFO_ENDPOINT = "http://localhost:8180/realms/SpringBootKeycloak/protocol/openid-connect/userinfo";
+    private static final String USER_INFO_ENDPOINT = "http://localhost:8180/realms/SpringBootKeycloak/protocol/openid-connect/userinfo";
     private final RestTemplate restTemplate;
 
     @Autowired
@@ -24,7 +26,7 @@ public class UserInfoService {
         this.restTemplate = restTemplate;
     }
 
-    public String fetchSubFromUserInfoEndpoint(String accessToken) {
+    public UserInfo fetchSubFromUserInfoEndpoint(String accessToken) throws JsonProcessingException {
         final HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -40,7 +42,7 @@ public class UserInfoService {
             HttpStatus statusCode = (HttpStatus) response.getStatusCode();
 
             if (statusCode.is2xxSuccessful()) {
-                return response.getBody();
+                return new ObjectMapper().readValue(response.getBody(), UserInfo.class);
             } else {
                 throw new HttpClientErrorException(statusCode, "HTTP request failed");
             }
