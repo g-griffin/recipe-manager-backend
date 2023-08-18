@@ -1,8 +1,11 @@
 package de.g_griffin.recipe_manager_backend.user_info;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import de.g_griffin.recipe_manager_backend.exceptions.ResourceNotFoundException;
+import jakarta.persistence.Id;
+import lombok.Getter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -26,7 +29,7 @@ public class UserInfoService {
         this.restTemplate = restTemplate;
     }
 
-    public UserInfo fetchSubFromUserInfoEndpoint(String accessToken) throws JsonProcessingException {
+    public String fetchSubFromUserInfoEndpoint(String accessToken) throws JsonProcessingException {
         final HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -42,7 +45,8 @@ public class UserInfoService {
             HttpStatus statusCode = (HttpStatus) response.getStatusCode();
 
             if (statusCode.is2xxSuccessful()) {
-                return new ObjectMapper().readValue(response.getBody(), UserInfo.class);
+                UserInfo userInfo = new ObjectMapper().readValue(response.getBody(), UserInfo.class);
+                return userInfo.sub;
             } else {
                 throw new HttpClientErrorException(statusCode, "HTTP request failed");
             }
@@ -55,4 +59,25 @@ public class UserInfoService {
         }
     }
 
+    @Getter
+    private static class UserInfo {
+        @Id
+        private String sub;
+
+        @JsonProperty("email_verified")
+        private boolean emailVerified;
+
+        private String name;
+
+        @JsonProperty("preferred_username")
+        private String preferredUsername;
+
+        @JsonProperty("given_name")
+        private String givenName;
+
+        @JsonProperty("family_name")
+        private String familyName;
+
+        private String email;
+    }
 }
