@@ -29,7 +29,8 @@ public class UserInfoService {
         this.restTemplate = restTemplate;
     }
 
-    public String fetchSubFromUserInfoEndpoint(String accessToken) throws JsonProcessingException {
+    public String fetchSubFromUserInfoEndpoint(String bearerToken) throws JsonProcessingException {
+        String accessToken = bearerToken.split(" ")[1];
         final HttpHeaders headers = new HttpHeaders();
         headers.set(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
         headers.setContentType(MediaType.APPLICATION_JSON);

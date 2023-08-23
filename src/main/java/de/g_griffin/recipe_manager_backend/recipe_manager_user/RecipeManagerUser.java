@@ -15,4 +15,9 @@ public class RecipeManagerUser {
 
     public RecipeManagerUser() {
     }
+
+    @Override
+    public String toString() {
+        return "RecipeManagerUser{" + "id=" + id + '}';
+    }
 }
